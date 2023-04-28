@@ -1,0 +1,35 @@
+apiVersion: intersystems.com/v1alpha1
+kind: IrisCluster
+metadata:
+  name: fhir-tls
+spec:
+  imagePullSecrets:
+    - name: icr-secret
+  storageClassName: gp2
+  licenseKeySecret:
+    name: fhir-iris-key-secret
+  configSource:
+    name: fhir-cpf
+  tls:
+    webgateway:
+      secret:
+        secretName: fhir-tls-tls
+    common:
+      secret:
+        secretName: fhir-tls-internal-tls
+  topology:
+    webgateway:  
+      image: containers.intersystems.com/intersystems/webgateway:2023.1.0.229.0
+      type: apache
+      replicas: 1
+      applicationPaths:
+        - /csp/sys
+        - /csp/healthshare
+        - /oauth2
+      alternativeServers: LoadBalancing
+    data:
+      compatibilityVersion: 2023.1.0
+      image: containers.intersystems.com/intersystems/irishealth:2023.1.0.229.0
+  serviceTemplate:
+    spec:
+      type: ClusterIP

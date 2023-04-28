@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: robert.kuszewski@intersystems.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - dns01:
+        route53:
+          region: us-east-2 # Change this to your region
+          hostedZoneID: Z0129679I1GJY3XRJASG # Change this to your domain, this is currently summit.cloudintersystems.com

@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: fhir-tls-certificate-external
+spec:
+  secretName: fhir-tls-tls
+  privateKey:
+    rotationPolicy: Always
+  commonName: fhir.summit.cloudintersystems.com
+  dnsNames:
+    - fhir.summit.cloudintersystems.com
+  isCA: true
+  usages:
+    - server auth
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

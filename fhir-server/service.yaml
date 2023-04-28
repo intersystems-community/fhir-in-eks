@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fhir-tls-service
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: fhir.summit.cloudintersystems.com
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 443
+
+  selector:
+    intersystems.com/component: webgateway
+    intersystems.com/kind: IrisCluster
+    intersystems.com/name: fhir-tls
+    intersystems.com/role: webgateway
+  type: LoadBalancer
